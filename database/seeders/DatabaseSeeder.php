@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
+        $this->call(BranchSeeder::class);
 
-        $this->createUserWithRole('Super Admin', 'superadmin@laundry.test', UserRole::SuperAdmin);
-        $this->createUserWithRole('Admin', 'admin@laundry.test', UserRole::Admin);
+        $this->createUserWithRole('Super Admin', 'c', UserRole::SuperAdmin);
+        $this->createUserWithRole('Branch Admin', 'admin@laundry.test', UserRole::BranchAdmin);
         $this->createUserWithRole('Staff', 'staff@laundry.test', UserRole::Staff);
         $this->createUserWithRole('Test User', 'test@example.com', UserRole::Customer);
     }

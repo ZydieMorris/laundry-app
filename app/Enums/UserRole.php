@@ -5,7 +5,7 @@ namespace App\Enums;
 enum UserRole: string
 {
     case SuperAdmin = 'super_admin';
-    case Admin = 'admin';
+    case BranchAdmin = 'branch_admin';
     case Staff = 'staff';
     case Customer = 'customer';
 
@@ -16,7 +16,7 @@ enum UserRole: string
     {
         return match ($this) {
             self::SuperAdmin => 'Super Admin',
-            self::Admin => 'Admin',
+            self::BranchAdmin => 'Branch Admin',
             self::Staff => 'Staff',
             self::Customer => 'Customer',
         };
@@ -29,7 +29,7 @@ enum UserRole: string
     {
         return match ($this) {
             self::SuperAdmin => 'superadmin.dashboard',
-            self::Admin => 'admin.dashboard',
+            self::BranchAdmin => 'branch_admin.dashboard',
             self::Staff => 'staff.dashboard',
             self::Customer => 'customer.dashboard',
         };

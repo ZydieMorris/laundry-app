@@ -35,7 +35,7 @@ test('users are redirected to their role dashboard after authentication', functi
     $response->assertRedirect(route($routeName, absolute: false));
 })->with([
     'super admin' => [UserRole::SuperAdmin, 'superadmin.dashboard'],
-    'admin' => [UserRole::Admin, 'admin.dashboard'],
+    'branch admin' => [UserRole::BranchAdmin, 'branch_admin.dashboard'],
     'staff' => [UserRole::Staff, 'staff.dashboard'],
     'customer' => [UserRole::Customer, 'customer.dashboard'],
 ]);

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import { dashboard } from '@/routes/admin';
+import { dashboard } from '@/routes/branch_admin';
 
 defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Admin Dashboard',
+                title: 'Branch Admin Dashboard',
                 href: dashboard(),
             },
         ],
@@ -16,10 +16,12 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Admin Dashboard" />
+    <Head title="Branch Admin Dashboard" />
 
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-        <h1 class="text-2xl font-semibold">Admin Dashboard</h1>
+    <div
+        class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
+    >
+        <h1 class="text-2xl font-semibold">Branch Admin Dashboard</h1>
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <div
                 class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"

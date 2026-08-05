@@ -18,7 +18,9 @@ defineOptions({
 <template>
     <Head title="Staff Dashboard" />
 
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+    <div
+        class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
+    >
         <h1 class="text-2xl font-semibold">Staff Dashboard</h1>
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <div

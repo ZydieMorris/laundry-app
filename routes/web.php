@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Customer\DashboardController ;
+use App\Http\Controllers\BranchAdmin\DashboardController as BranchAdminDashboardController;
+use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\DashboardRedirectController;
-use App\Http\Controllers\Staff\DashboardController ;
-use App\Http\Controllers\SuperAdmin\DashboardController ;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
+use App\Http\Controllers\SuperAdmin\BranchController as SuperAdminBranchController;
+use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
@@ -15,10 +16,11 @@ Route::get('dashboard', DashboardRedirectController::class)
 
 Route::middleware(['auth', 'verified', 'role:super_admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('branches', SuperAdminBranchController::class)->only(['index', 'store', 'update']);
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:branch_admin'])->prefix('branch-admin')->name('branch_admin.')->group(function () {
+    Route::get('/', [BranchAdminDashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::middleware(['auth', 'verified', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {

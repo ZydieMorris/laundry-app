@@ -170,3 +170,52 @@
         @apply bg-background text-foreground;
     }
 }
+
+/*
+  Super Admin theme: light Indigo/Slate palette with a dark slate sidebar.
+  Scoped via `.superadmin-theme` on <html> so teleported overlays inherit it.
+  Placed after `.dark` so it wins regardless of the appearance setting.
+*/
+.superadmin-theme {
+    color-scheme: light;
+
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #e0e7ff;
+    --accent-foreground: #4338ca;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e2e8f0;
+    --input: #cbd5e1;
+    --ring: #6366f1;
+    --chart-1: #4f46e5;
+    --chart-2: #8b5cf6;
+    --chart-3: #10b981;
+    --chart-4: #f59e0b;
+    --chart-5: #3b82f6;
+    --radius: 0.75rem;
+    --sidebar-background: #020617;
+    --sidebar-foreground: #cbd5e1;
+    --sidebar-primary: #4f46e5;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #4f46e5;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: #1e293b;
+    --sidebar-ring: #4f46e5;
+    --sidebar: #020617;
+}
+
+.superadmin-theme [data-sidebar='menu-button']:not([data-active='true']):hover {
+    background-color: #1e293b;
+    color: #cbd5e1;
+}
