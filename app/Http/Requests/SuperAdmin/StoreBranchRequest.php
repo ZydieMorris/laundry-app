@@ -36,9 +36,8 @@ class StoreBranchRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:branches,name'],
+            'owner' => ['nullable', 'string', 'max:255'],
             'code' => ['nullable', 'string', 'max:20', 'unique:branches,code'],
-            'contact_number' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255'],
             'address' => ['nullable', 'string', 'max:500'],
             'status' => ['sometimes', Rule::enum(BranchStatus::class)],
         ];

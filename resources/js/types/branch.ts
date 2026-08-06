@@ -3,9 +3,8 @@ export type BranchStatus = 'active' | 'inactive';
 export interface Branch {
     id: number;
     name: string;
+    owner: string | null;
     code: string;
-    contact_number: string | null;
-    email: string | null;
     address: string | null;
     status: BranchStatus;
     created_at: string;

@@ -2,7 +2,10 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
+import BranchAdminLayout from '@/layouts/BranchAdminLayout.vue';
+import CustomerLayout from '@/layouts/CustomerLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
+import StaffLayout from '@/layouts/StaffLayout.vue';
 import SuperAdminLayout from '@/layouts/SuperAdminLayout.vue';
 import { initializeFlashToast } from '@/lib/flashToast';
 
@@ -20,6 +23,12 @@ createInertiaApp({
                 return [AppLayout, SettingsLayout];
             case name.startsWith('superadmin/'):
                 return SuperAdminLayout;
+            case name.startsWith('branch_admin/'):
+                return BranchAdminLayout;
+            case name.startsWith('staff/'):
+                return StaffLayout;
+            case name.startsWith('customer/'):
+                return CustomerLayout;
             default:
                 return AppLayout;
         }

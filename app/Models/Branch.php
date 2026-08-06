@@ -12,15 +12,14 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $owner
  * @property string $code
- * @property string|null $contact_number
- * @property string|null $email
  * @property string|null $address
  * @property BranchStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'code', 'contact_number', 'email', 'address', 'status'])]
+#[Fillable(['name', 'owner', 'code', 'address', 'status'])]
 class Branch extends Model
 {
     /** @use HasFactory<BranchFactory> */

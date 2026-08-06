@@ -19,12 +19,11 @@ class UpdateBranchRequest extends StoreBranchRequest
         $branchId = $branch instanceof Branch ? $branch->getKey() : null;
 
         return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('branches', 'name')->ignore($branchId)],
-            'code' => ['nullable', 'string', 'max:20', Rule::unique('branches', 'code')->ignore($branchId)],
-            'contact_number' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'address' => ['nullable', 'string', 'max:500'],
-            'status' => ['required', Rule::enum(BranchStatus::class)],
+            'name' => ['sometimes', 'required', 'string', 'max:255', Rule::unique('branches', 'name')->ignore($branchId)],
+            'owner' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'code' => ['sometimes', 'nullable', 'string', 'max:20', Rule::unique('branches', 'code')->ignore($branchId)],
+            'address' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'status' => ['sometimes', 'required', Rule::enum(BranchStatus::class)],
         ];
     }
 }

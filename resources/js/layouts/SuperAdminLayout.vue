@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { LayoutGrid, Store } from '@lucide/vue';
+import { LayoutGrid, Store, Users } from '@lucide/vue';
 import { onBeforeUnmount, onMounted } from 'vue';
 import { updateTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes/superadmin';
 import { index as branchesIndex } from '@/routes/superadmin/branches';
+import { index as usersIndex } from '@/routes/superadmin/users';
 import type { Appearance, BreadcrumbItem, NavItem } from '@/types';
 
 withDefaults(
@@ -26,6 +27,11 @@ const navItems: NavItem[] = [
         title: 'Branches',
         href: branchesIndex.url(),
         icon: Store,
+    },
+    {
+        title: 'Users',
+        href: usersIndex.url(),
+        icon: Users,
     },
 ];
 

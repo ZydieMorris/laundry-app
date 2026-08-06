@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, router } from '@inertiajs/vue3';
 import { Plus, Search, Store } from '@lucide/vue';
+import { watchDebounced } from '@vueuse/core';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import BranchTable from '@/components/superadmin/branch/BranchTable.vue';
@@ -48,13 +49,11 @@ const isEmpty = computed(
     () => props.branches.data.length === 0 && !loading.value,
 );
 
-let searchTimer: number | undefined;
-
-function onSearchInput(): void {
-    window.clearTimeout(searchTimer);
-    searchTimer = window.setTimeout(() => {
+watchDebounced(
+    search,
+    (value) => {
         router.get(
-            index.url({ query: { search: search.value || undefined } }),
+            index.url({ query: { search: value || undefined } }),
             {},
             {
                 preserveScroll: true,
@@ -63,8 +62,9 @@ function onSearchInput(): void {
                 only: ['branches', 'filters'],
             },
         );
-    }, 300);
-}
+    },
+    { debounce: 300, maxWait: 1000 },
+);
 
 let stopLoading: (() => void) | undefined;
 let stopLoaded: (() => void) | undefined;
@@ -81,7 +81,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     stopLoading?.();
     stopLoaded?.();
-    window.clearTimeout(searchTimer);
 });
 
 function goToPage(page: number): void {
@@ -105,10 +104,7 @@ function goToPage(page: number): void {
         <div
             class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
-            <Heading
-                title="Branches"
-                description="Manage all laundry branches across the company."
-            />
+            <Heading title="Branches" description="" />
             <Button @click="createOpen = true">
                 <Plus class="size-4" />
                 Add Branch
@@ -121,10 +117,9 @@ function goToPage(page: number): void {
             />
             <Input
                 v-model="search"
-                class="pl-9"
-                placeholder="Search by name, code, or email..."
+                class="max-w-sm pl-9"
+                placeholder="Search by name or code..."
                 :aria-label="'Search branches'"
-                @input="onSearchInput"
             />
         </div>
 

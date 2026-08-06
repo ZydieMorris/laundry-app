@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Branch;
+use App\Models\User;
 use App\Policies\BranchPolicy;
+use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
     protected function registerPolicies(): void
     {
         Gate::policy(Branch::class, BranchPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
     }
 
     /**

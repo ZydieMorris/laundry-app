@@ -17,17 +17,15 @@ test('super admin can view the branches page', function () {
             ->where('branches.data.0.id', $branch->id));
 });
 
-test('branches page supports searching by name, code and email', function (array $filters) {
+test('branches page supports searching by name and code', function (array $filters) {
     $match = Branch::factory()->create([
         'name' => 'Downtown Laundry',
         'code' => 'BR-DOWNTOWN',
-        'email' => 'downtown@laundry.test',
     ]);
 
     Branch::factory()->create([
         'name' => 'Uptown Fresh',
         'code' => 'BR-UPTOWN',
-        'email' => 'uptown@laundry.test',
     ]);
 
     $this->actingAs(createUserWithRole(UserRole::SuperAdmin))
@@ -40,7 +38,6 @@ test('branches page supports searching by name, code and email', function (array
 })->with([
     'by name' => [['search' => 'Downtown']],
     'by code' => [['search' => 'BR-DOWNTOWN']],
-    'by email' => [['search' => 'downtown@laundry.test']],
 ]);
 
 test('branches page is paginated', function () {
@@ -64,9 +61,8 @@ test('super admin can create a branch', function () {
     $this->actingAs(createUserWithRole(UserRole::SuperAdmin))
         ->post(route('superadmin.branches.store'), [
             'name' => 'Downtown Laundry',
+            'owner' => 'Maria Santos',
             'code' => 'BR-DOWNTOWN',
-            'contact_number' => '+1 555-0101',
-            'email' => 'downtown@laundry.test',
             'address' => '123 Main Street',
         ])
         ->assertRedirect()
@@ -75,6 +71,7 @@ test('super admin can create a branch', function () {
 
     $this->assertDatabaseHas('branches', [
         'name' => 'Downtown Laundry',
+        'owner' => 'Maria Santos',
         'code' => 'BR-DOWNTOWN',
         'status' => 'active',
     ]);
@@ -129,11 +126,12 @@ test('branch code must be unique when provided', function () {
 });
 
 test('super admin can update a branch', function () {
-    $branch = Branch::factory()->create(['name' => 'Old Name']);
+    $branch = Branch::factory()->create(['name' => 'Old Name', 'owner' => 'Old Owner']);
 
     $this->actingAs(createUserWithRole(UserRole::SuperAdmin))
         ->put(route('superadmin.branches.update', $branch), [
             'name' => 'New Name',
+            'owner' => 'New Owner',
             'code' => $branch->code,
             'status' => 'inactive',
         ])
@@ -144,6 +142,7 @@ test('super admin can update a branch', function () {
     $branch->refresh();
 
     expect($branch->name)->toBe('New Name');
+    expect($branch->owner)->toBe('New Owner');
     expect($branch->status)->toBe(BranchStatus::Inactive);
 });
 
@@ -157,6 +156,19 @@ test('branch can keep its own name and code during update', function () {
             'status' => 'active',
         ])
         ->assertSessionHasNoErrors();
+});
+
+test('branch status can be toggled with a partial update', function () {
+    $branch = Branch::factory()->create();
+
+    $this->actingAs(createUserWithRole(UserRole::SuperAdmin))
+        ->put(route('superadmin.branches.update', $branch), [
+            'status' => 'inactive',
+        ])
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect($branch->refresh()->status)->toBe(BranchStatus::Inactive);
 });
 
 test('non super admin roles cannot manage branches', function (UserRole $role) {

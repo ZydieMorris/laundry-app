@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { MoreHorizontal, Pencil, Power } from '@lucide/vue';
+import { MoreHorizontal, Pencil } from '@lucide/vue';
 import { ref } from 'vue';
-import BranchStatusBadge from '@/components/superadmin/branch/BranchStatusBadge.vue';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -18,10 +17,10 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Switch } from '@/components/ui/switch';
 import {
     Table,
     TableBody,
@@ -46,12 +45,6 @@ withDefaults(
 const emit = defineEmits<{ edit: [branch: Branch] }>();
 
 const toggleBranch = ref<Branch | null>(null);
-
-function formatDate(value: string): string {
-    return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
-        new Date(value),
-    );
-}
 
 function confirmToggle(): void {
     if (toggleBranch.value === null) {
@@ -78,17 +71,16 @@ function confirmToggle(): void {
                 <TableRow>
                     <TableHead>Branch Name</TableHead>
                     <TableHead>Code</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Created</TableHead>
+                    <TableHead>Owner</TableHead>
+                    <TableHead>Address</TableHead>
+                    <TableHead>Active</TableHead>
                     <TableHead class="w-12 text-right">Actions</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 <template v-if="loading">
                     <TableRow v-for="row in 6" :key="row">
-                        <TableCell v-for="column in 7" :key="column">
+                        <TableCell v-for="column in 6" :key="column">
                             <Skeleton class="h-5 w-full" />
                         </TableCell>
                     </TableRow>
@@ -106,19 +98,24 @@ function confirmToggle(): void {
                                 {{ branch.code }}
                             </span>
                         </TableCell>
-                        <TableCell class="text-muted-foreground">
-                            {{ branch.contact_number ?? '—' }}
+                        <TableCell class="max-w-40 truncate">
+                            {{ branch.owner ?? '—' }}
                         </TableCell>
                         <TableCell
-                            class="max-w-52 truncate text-muted-foreground"
+                            class="max-w-56 truncate text-muted-foreground"
                         >
-                            {{ branch.email ?? '—' }}
+                            {{ branch.address ?? '—' }}
                         </TableCell>
                         <TableCell>
-                            <BranchStatusBadge :status="branch.status" />
-                        </TableCell>
-                        <TableCell class="text-muted-foreground">
-                            {{ formatDate(branch.created_at) }}
+                            <Switch
+                                :checked="branch.status === 'active'"
+                                :aria-label="
+                                    branch.status === 'active'
+                                        ? 'Deactivate branch'
+                                        : 'Activate branch'
+                                "
+                                @update:checked="toggleBranch = branch"
+                            />
                         </TableCell>
                         <TableCell class="text-right">
                             <DropdownMenu>
@@ -134,28 +131,12 @@ function confirmToggle(): void {
                                         <MoreHorizontal class="size-4" />
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" class="w-44">
+                                <DropdownMenuContent align="end" class="w-40">
                                     <DropdownMenuItem
                                         @click="emit('edit', branch)"
                                     >
                                         <Pencil class="size-4" />
                                         Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        :class="
-                                            branch.status === 'active'
-                                                ? 'text-destructive focus:text-destructive'
-                                                : ''
-                                        "
-                                        @click="toggleBranch = branch"
-                                    >
-                                        <Power class="size-4" />
-                                        {{
-                                            branch.status === 'active'
-                                                ? 'Deactivate'
-                                                : 'Activate'
-                                        }}
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

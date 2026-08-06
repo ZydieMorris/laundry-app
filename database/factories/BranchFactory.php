@@ -20,9 +20,8 @@ class BranchFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company().' Laundry',
+            'owner' => $this->faker->name(),
             'code' => strtoupper('BR-'.$this->faker->unique()->bothify('####??')),
-            'contact_number' => $this->faker->phoneNumber(),
-            'email' => $this->faker->unique()->companyEmail(),
             'address' => $this->faker->address(),
             'status' => BranchStatus::Active,
         ];
